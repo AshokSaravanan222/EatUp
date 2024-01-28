@@ -2,19 +2,25 @@ import React from 'react'
 import { Text, View, SafeAreaView, StyleSheet, ActivityIndicator, FlatList} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { useLocalSearchParams } from 'expo-router';
 
 import { useState, useEffect } from 'react';
 
 import {COLORS, SIZES, FONT} from "../../../constants"
 import Button from '../../../components/live/camera/custombutton/Button';
 
+import * as FileSystem from 'expo-file-system';
+
 const API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY
 const genAI = new GoogleGenerativeAI(API_KEY);
 const visionModel = genAI.getGenerativeModel({ model: "gemini-pro-vision"})
 
-const prompt = "What are the ingredients displayed in this food item? Respond in the form of a list like the following: ['Citric Acid', 'Soy Lecithin', ...]. If the item is not a food item, simply return []."
+const prompt = "What are the ingredients displayed in this food item? Respond in the form of a string seperated by commas: Citric Acid, Soy Lecithin, ... If the item is not a food item, simply return an empty string. Only output this string, do not output anything else."
 
 const Gemini = () => {
+
+    const params = useLocalSearchParams();
+    const { imageUri } = params;
 
     const [data, setData] = useState([]);
     const [isLoading, setLoading] = useState(false);
@@ -24,44 +30,46 @@ const Gemini = () => {
         try {
           setLoading(true);
     
-          // Request permission to access the media library 
-          const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-          if (permissionResult.granted === false) {
-            alert("Permission to access camera roll is required!");
-            return;
-          }
-    
-          // Launch the image picker
-          const pickerResult = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            base64: true,
-          });
-    
-          if (pickerResult.cancelled === true) {
+          // Check if the imageUri is available
+          if (!imageUri) {
+            console.error("No image URI available");
+            setError(true);
             setLoading(false);
             return;
           }
     
+          // Read the image file as base64
+          const base64 = await FileSystem.readAsStringAsync(imageUri, { encoding: 'base64' });
+          const mimeType = 'image/jpeg'; // Adjust this based on the actual image type
+    
           // Constructing GoogleGenerativeAI.Part object
           const imagePart = {
             inlineData: {
-              data: pickerResult.base64,
-              mimeType: pickerResult.type // Ensure this is a valid MIME type for the API
+              data: base64,
+              mimeType
             }
           };
     
           const result = await visionModel.generateContent([prompt, imagePart]);
           const text = await result.response.text();
-          setData(text);
+          const cleanedText = text.replace(/^\[|\]$/g, ''); // Removes leading and trailing brackets
+          const items = cleanedText.split(',').map(item => item.trim());
+          setData(items);
+
+          console.log(data);
           setLoading(false);
         } catch (error) {
           setLoading(false);
           console.error("fetchDataFromGeminiAPI error: ", error);
         }
     }
-      useEffect(() => {
-        fetchDataFromGeminiProVisionAPI();
-      }, []);
+
+    useEffect(() => {
+        if (imageUri) {
+          fetchDataFromGeminiProVisionAPI();
+        }
+      }, [imageUri]);
+
 
     const renderItem = ({ item }) => (
     <Text style={styles.itemText}>{item}</Text>
@@ -71,7 +79,7 @@ return (
     <SafeAreaView style={styles.container}>
       {isLoading ? (
         <View style={styles.loadingContainer}>
-          <Text style={styles.loadingText}>We are processing your photo...</Text>
+          <Text style={styles.headerTitle}>We are processing your photo...</Text>
           <ActivityIndicator size="large" color={COLORS.primary} />
         </View>
       ) : error ? (
