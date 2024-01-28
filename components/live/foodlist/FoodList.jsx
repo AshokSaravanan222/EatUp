@@ -175,7 +175,7 @@ useEffect(() => {
                 doesLoop={false}
                 style={styles.slide4}
                 lottieFile={require("./../../../assets/lottie/diet_plan")}
-                size={200}
+                size={350}
               />
             </View>
               }

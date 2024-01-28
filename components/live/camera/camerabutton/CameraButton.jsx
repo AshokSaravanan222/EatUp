@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons"; // Import the Ionicons from @expo/vector-icons
-import { COLORS, SHADOWS, SIZES } from "../../../../constants";
+import { COLORS, SHADOWS, SIZES } from "../../../../constants"
 import { useRouter } from "expo-router";
 
 const CameraButton = () => {
@@ -10,7 +10,7 @@ const CameraButton = () => {
 
   return (
     <TouchableOpacity style={styles.buttonContainer} onPress={() => {
-        router.push("live/camera");
+        router.push("home/camera");
     }}>
       <Ionicons name="camera" size={28} color="white" style={styles.icon} />
       <Text style={styles.buttonText}>
@@ -33,18 +33,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     ...SHADOWS.medium,
-    shadowColor: COLORS.white,
-    ...Platform.select({
-      ios: {
-        shadowColor: "black",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   buttonText: {
     color: "white",

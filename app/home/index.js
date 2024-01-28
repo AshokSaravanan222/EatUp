@@ -1,6 +1,6 @@
 import { SafeAreaView, View, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../../constants";
-import { FoodList, CameraButton } from "../../components";
+import { FoodList, CameraButton} from "../../components";
 
 const Page = () => {
   return (
