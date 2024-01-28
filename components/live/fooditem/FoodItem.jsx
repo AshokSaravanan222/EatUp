@@ -30,7 +30,7 @@ const FoodItem = ( {food} ) => {
           setModalVisible(!modalVisible);
         }}
       >
-        <FoodModal food={food} onPress={onPress} thumbnail={images.nutritionLogo} />
+        <FoodModal ingredient={food} onPress={onPress} thumbnail={images.nutritionLogo} />
       </Modal>
       <TouchableOpacity style={styles.logoContainer}>
         <Image
