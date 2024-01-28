@@ -1,7 +1,7 @@
-import FoodList from "./live/foodlist/FoodList";
-import Date from "./live/date/Date";
-import FoodItem from "./live/fooditem/FoodItem";
-import CameraButton from "./live/camera/camerabutton/CameraButton";
+import FoodList from "../components/live/foodlist/FoodList";
+import Date from "../components/live/date/Date";
+import FoodItem from "../components/live/fooditem/FoodItem";
+import CameraButton from "../components/live/camera/Camera";
 
 export {
   FoodList,
