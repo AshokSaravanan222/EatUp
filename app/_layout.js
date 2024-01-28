@@ -1,6 +1,6 @@
 import { useFonts } from "expo-font";
 import { COLORS } from '../constants';
-import { Stack } from "expo-router";
+import { Slot, Stack } from "expo-router";
 
 
 export const unstable_settings = {
@@ -21,6 +21,6 @@ export default function Layout() {
       }
 
     return (
-    <Stack/>
+    <Slot></Slot>
     );
 }

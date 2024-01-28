@@ -38,10 +38,10 @@ export default function CameraScreen() {
   const savePicture = async () => {
     if (image) {
       try {
-        alert('Food Tracked! 🍏');
+        // alert('Food Tracked! 🍏');
         setImage(null);
         console.log('saved successfully');
-        router.push("home");
+        router.push("home/gemini");
       } catch (error) {
         console.log(error);
       }
