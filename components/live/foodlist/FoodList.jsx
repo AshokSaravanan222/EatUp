@@ -121,7 +121,7 @@ const FoodList = () => {
 
 useEffect(() => {
   // Simulate a typing animation by updating the title character by character
-  const targetTitle = "NutritionAI";
+  const targetTitle = "EatUp";
   let currentIndex = 0;
   const typingInterval = setInterval(() => {
     if (currentIndex < targetTitle.length) {

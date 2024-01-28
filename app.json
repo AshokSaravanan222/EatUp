@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#232323"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -34,6 +34,6 @@
           "cameraPermission": "EatUp requires camera access to identify and measure food portions, aiding in nutritional tracking. Results are displayed on the homescreen."
         }
       ]
-    ],
+    ]
   }
 }
