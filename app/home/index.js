@@ -1,8 +1,10 @@
-import { SafeAreaView, View, StyleSheet } from "react-native";
+import { SafeAreaView, View, StyleSheet, Button, Text } from "react-native";
 import { COLORS, SIZES } from "../../constants";
 import { FoodList, CameraButton} from "../../components";
+import { useRouter } from "expo-router";
 
 const Page = () => {
+  const router = useRouter();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
         <View
@@ -12,6 +14,13 @@ const Page = () => {
             paddingBottom: 90, // Add padding to create space for the button
           }}
         >
+          <Button
+            onPress={() => router.push("home/ingredient")}
+            title="Learn More"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+
           <FoodList />
         </View>
         <View style={styles.cameraButtonContainer}>
