@@ -3,6 +3,7 @@ import { Text, View, SafeAreaView, StyleSheet, ActivityIndicator, FlatList} from
 import * as ImagePicker from 'expo-image-picker';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { useLocalSearchParams } from 'expo-router';
+import MyButton from './MyButton';
 
 import { useState, useEffect } from 'react';
 
@@ -16,7 +17,7 @@ const API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY
 const genAI = new GoogleGenerativeAI(API_KEY);
 const visionModel = genAI.getGenerativeModel({ model: "gemini-pro-vision"})
 
-const prompt = "What are the ingredients displayed in this food item? Respond in the form of a string seperated by commas: Citric Acid, Soy Lecithin, ... If the item is not a food item, simply return an empty string. Only output this string, do not output anything else."
+const prompt = "What are the ingredients displayed in this food item? Respond in the form of a string seperated by commas where the first element is the clasification of the food: Energy Drink, Citric Acid, Soy Lecithin, ... If the item is not a food item, simply return an empty string. Only output this string, do not output anything else."
 
 const uuid = "af7c1fe6-d669-414e-b066-e9733f0de7a8"
 
@@ -86,6 +87,7 @@ const Gemini = () => {
             // Add other necessary data or headers as required by your API
           });
           console.log(response.data); // Handle the response as needed
+          router.push({ pathname: '/home/ingredients', params: { name: data[0], data: data.slice(1)}});
         } catch (error) {
           console.error('Error posting data:', error);
         }
@@ -101,18 +103,19 @@ return (
       ) : error ? (
         <Text style={styles.errorText}>Something went wrong</Text>
       ) : (
+        <View>
+        <Text style={styles.headerTitle}>Here are the ingredients:</Text>
         <FlatList
           data={data}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={styles.listContentContainer}
-          ListHeaderComponent={<Text style={styles.headerText}>Ingredient Items</Text>}
-          ListFooterComponent={<Text style={styles.footerText}>Footer</Text>}
         />
+        </View>
       )}
       {
         data.length > 0 && (
-          <Button title="Post Ingredients" onPress={postIngredients} />
+          <MyButton title="Post Ingredients" onPress={postIngredients} />
         )
       }
     </SafeAreaView>
@@ -122,6 +125,7 @@ return (
 const styles = StyleSheet.create({
     container: {
       marginTop: SIZES.xLarge,
+      padding: 20
     },
     header: {
       flexDirection: "row",
@@ -132,6 +136,7 @@ const styles = StyleSheet.create({
       fontSize: SIZES.large,
       fontFamily: FONT.medium,
       color: COLORS.primary,
+      padding: 20
     },
     headerBtn: {
       fontSize: SIZES.medium,

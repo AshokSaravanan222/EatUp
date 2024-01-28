@@ -48,6 +48,11 @@ const styles = StyleSheet.create({
     fontFamily: "DMBold",
     color: COLORS.primary,
   },
+  calorieName: {
+    fontSize: SIZES.medium,
+    fontFamily: "DMBold",
+    color: "green",
+  },
   jobType: {
     fontSize: SIZES.small + 2,
     fontFamily: "DMRegular",

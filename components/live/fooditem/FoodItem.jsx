@@ -34,11 +34,7 @@ const FoodItem = ( {food} ) => {
       </Modal>
       <TouchableOpacity style={styles.logoContainer}>
         <Image
-          source={
-            checkImageURL(food.thumbnail)
-              ? { uri: food.thumbnail }
-              : images.nutritionLogo
-          }
+          source={images.nutritionLogo}
           resizeMode="contain"
           style={styles.logImage}
         />
@@ -46,14 +42,14 @@ const FoodItem = ( {food} ) => {
 
       <View style={styles.textContainer}>
         <Text style={styles.jobName} numberOfLines={2}>
-          {food.id}
+          {food.name}
         </Text>
       </View>
       <View style={styles.calorieContainer}>
         <Text style={styles.jobName} numberOfLines={2}>
-          Cal
+          Score
         </Text>
-        <Text style={styles.calories}>{food.calories}</Text>
+        <Text style={styles.calorieName}>{food.score}</Text>
       </View>
     </TouchableOpacity>
   );

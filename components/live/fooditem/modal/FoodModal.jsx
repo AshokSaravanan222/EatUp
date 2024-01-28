@@ -1,11 +1,11 @@
 import React from "react";
-import { View, TouchableOpacity, Text, Linking, Image } from "react-native";
+import { View, TouchableOpacity, Text, Linking, Image, InteractionManager } from "react-native";
 import { COLORS, images } from "../../../../constants";
 import { AntDesign } from "@expo/vector-icons";
 
 import {nutritionLogo} from "../../../../constants"
 
-const FoodModal = ({ food, onPress, thumbnail }) => {
+const FoodModal = ({ ingredient, onPress, thumbnail }) => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View
@@ -50,13 +50,13 @@ const FoodModal = ({ food, onPress, thumbnail }) => {
               }}
             />
           </View>
-          <Text style={{ color: COLORS.primary, fontSize: 25 }}>{food.id}</Text>
+          <Text style={{ color: COLORS.primary, fontSize: 25 }}>{ingredient.name}</Text>
           <Text style={{ color: COLORS.primary, fontSize: 20, marginTop: 10 }}>
-            Calories: {food.calories}
+            Score: {ingredient.score}
           </Text>
         </View>
         <Text style={{ color: COLORS.primary, marginTop: 10 }}>
-          This is a description of the food, where we will give you personolized meal plan ideas.
+          {ingredient.summary}
         </Text>
       </View>
     </View>

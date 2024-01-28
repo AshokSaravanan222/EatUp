@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ActivityIndicator, FlatList } from "react-native";
+import { View, Text, ActivityIndicator, FlatList, Image } from "react-native";
 import { useState, useRef, useEffect } from "react";
 import TextTicker from "react-native-text-ticker";
 import Slide from "../../hero/Slide";
@@ -140,6 +140,35 @@ useEffect(() => {
   return (
     <View style={styles.container}>
       <View style={styles.cardsContainer}>
+      <View>
+                  <TextTicker
+                ref={titleRef}
+                style={{
+                  fontFamily: FONT.bold,
+                  fontSize: 100,
+                  color: COLORS.primary,
+                }}
+                duration={4000} // Adjust the duration for animation speed
+                loop
+                bounce
+                repeatSpacer={50}
+                marqueeDelay={1000}
+              >
+                {title}
+              </TextTicker>
+              <Image
+              source={require("../../../assets/food.jpg")}
+              resizeMode="cover"
+              style={{
+                width: 300,
+                height: 300,
+                borderRadius: 20,
+              }}
+            />
+            <Text style={{fontFamily: FONT.bold,
+                  fontSize: 20,
+                  color: COLORS.primary}}>Snap a picture to get started! We will find all of the ingredients in the image and show you how healthy they are for you. Remember, if its healthy, Eat Up!</Text>
+            </View>
         {isLoading ? (
           <ActivityIndicator size="large" color={COLORS.primary} />
         ) : error ? (
@@ -155,29 +184,7 @@ useEffect(() => {
               contentContainerStyle={{ columnGap: SIZES.medium }}
               vertical
               ListHeaderComponent={
-                <View>
-                  <TextTicker
-                ref={titleRef}
-                style={{
-                  fontFamily: FONT.bold,
-                  fontSize: SIZES.xxLarge,
-                  color: COLORS.primary,
-                }}
-                duration={4000} // Adjust the duration for animation speed
-                loop
-                bounce
-                repeatSpacer={50}
-                marqueeDelay={1000}
-              >
-                {title}
-              </TextTicker>
-              <Slide
-                doesLoop={false}
-                style={styles.slide4}
-                lottieFile={require("./../../../assets/lottie/diet_plan")}
-                size={350}
-              />
-            </View>
+                <Text></Text>
               }
             />
           </View>
