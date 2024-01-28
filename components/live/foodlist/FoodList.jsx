@@ -14,22 +14,22 @@ const data = {
       date: "08-09-23",
       data: [
         {
-          id: "Apple",
-          calories: 110,
+          name: "Apple",
+          score: 110,
           thumbnail:
             "https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg",
           amountEaten: 1.1,
         },
         {
-          id: "Orange",
-          calories: 200,
+          name: "Orange",
+          score: 200,
           thumbnail:
             "https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg",
           amountEaten: 10.5,
         },
         {
-          id: "Banana",
-          calories: 70,
+          name: "Banana",
+          score: 70,
           thumbnail:
             "https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg",
           amountEaten: 2.9,
@@ -40,22 +40,22 @@ const data = {
       date: "08-21-23",
       data: [
         {
-          id: "Grapes",
-          calories: 110,
+          name: "Grapes",
+          score: 110,
           thumbnail:
             "https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg",
           amountEaten: 1.1,
         },
         {
-          id: "Orange",
-          calories: 200,
+          name: "Orange",
+          score: 200,
           thumbnail:
             "https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg",
           amountEaten: 1,
         },
         {
-          id: "Banana",
-          calories: 70,
+          name: "Banana",
+          score: 70,
           thumbnail:
             "https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg",
           amountEaten: 3.1,
@@ -66,22 +66,22 @@ const data = {
       date: "08-13-23",
       data: [
         {
-          id: "Bread",
-          calories: 200,
+          name: "Bread",
+          score: 200,
           thumbnail:
             "https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg",
           amountEaten: 4.9,
         },
         {
-          id: "Blueberries",
-          calories: 250,
+          name: "Blueberries",
+          score: 250,
           thumbnail:
             "https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg",
           amountEaten: 12.5,
         },
         {
-          id: "Kiwi",
-          calories: 300,
+          name: "Kiwi",
+          score: 300,
           thumbnail:
             "https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg",
           amountEaten: 0.5,
@@ -140,7 +140,22 @@ useEffect(() => {
   return (
     <View style={styles.container}>
       <View style={styles.cardsContainer}>
-      <View>
+        {isLoading ? (
+          <ActivityIndicator size="large" color={COLORS.primary} />
+        ) : error ? (
+          <Text>Something went wrong</Text>
+        ) : (
+          <View>
+            <FlatList
+              data={data.items}
+              renderItem={({ item }) => (
+                <Date date={formatDate(item.date)} data={item.data} />
+              )}
+              keyExtractor={(item) => item.date}
+              contentContainerStyle={{ columnGap: SIZES.medium }}
+              vertical
+              ListHeaderComponent={
+                <View>
                   <TextTicker
                 ref={titleRef}
                 style={{
@@ -165,26 +180,7 @@ useEffect(() => {
                 borderRadius: 20,
               }}
             />
-            <Text style={{fontFamily: FONT.bold,
-                  fontSize: 20,
-                  color: COLORS.primary}}>Snap a picture to get started! We will find all of the ingredients in the image and show you how healthy they are for you. Remember, if its healthy, Eat Up!</Text>
             </View>
-        {isLoading ? (
-          <ActivityIndicator size="large" color={COLORS.primary} />
-        ) : error ? (
-          <Text>Something went wrong</Text>
-        ) : (
-          <View>
-            <FlatList
-              data={data.items}
-              renderItem={({ item }) => (
-                <Date date={formatDate(item.date)} data={item.data} />
-              )}
-              keyExtractor={(item) => item.date}
-              contentContainerStyle={{ columnGap: SIZES.medium }}
-              vertical
-              ListHeaderComponent={
-                <Text></Text>
               }
             />
           </View>
