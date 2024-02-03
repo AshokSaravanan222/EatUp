@@ -8,7 +8,6 @@ import MyButton from './MyButton';
 import { useState, useEffect } from 'react';
 
 import {COLORS, SIZES, FONT} from "../../../constants"
-import Button from '../../../components/live/camera/custombutton/Button';
 
 import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
@@ -87,7 +86,7 @@ const Gemini = () => {
             // Add other necessary data or headers as required by your API
           });
           console.log(response.data); // Handle the response as needed
-          router.push({ pathname: '/home/ingredients', params: { name: data[0], data: data.slice(1)}});
+          // router.push({ pathname: '/home/ingredients', params: { name: data[0], data: data.slice(1)}});
         } catch (error) {
           console.error('Error posting data:', error);
         }
@@ -95,6 +94,7 @@ const Gemini = () => {
 
 return (
     <SafeAreaView style={styles.container}>
+      <View>
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <Text style={styles.headerTitle}>We are processing your photo...</Text>
@@ -106,18 +106,22 @@ return (
         <View>
         <Text style={styles.headerTitle}>Here are the ingredients:</Text>
         <FlatList
-          data={data}
+          data={data.slice(1)}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={styles.listContentContainer}
         />
         </View>
       )}
+      </View>
+      <View style={styles.centeredView}>
       {
         data.length > 0 && (
           <MyButton title="Post Ingredients" onPress={postIngredients} />
         )
       }
+    </View>
+      
     </SafeAreaView>
   );
 }
@@ -146,6 +150,17 @@ const styles = StyleSheet.create({
     cardsContainer: {
       marginTop: SIZES.medium,
       paddingLeft: 10,
+    },
+    itemText: {
+      fontSize: SIZES.medium,
+      fontFamily: FONT.medium,
+      color: COLORS.gray,
+      paddingLeft: 20,
+      paddingBottom: 10
+    },
+    centeredView: {
+      justifyContent: 'center', // Centers content vertically in the container
+      alignItems: 'center', // Centers content horizontally in the container
     },
   });
   

@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Constants from 'expo-constants';
 import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
-import Button from '../../../components/live/camera/custombutton/Button';
+import Button from '../../../components/camera/CameraButton';
 import {useRouter} from 'expo-router'
 import { COLORS } from '../../../constants';
 

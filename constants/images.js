@@ -7,5 +7,5 @@ export default {
   logo,
   food,
   book,
-  nutritionLogo
+  nutritionLogo,
 };

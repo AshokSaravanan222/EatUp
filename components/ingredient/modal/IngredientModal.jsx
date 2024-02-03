@@ -1,11 +1,15 @@
 import React from "react";
 import { View, TouchableOpacity, Text, Linking, Image, InteractionManager } from "react-native";
-import { COLORS, images } from "../../../../constants";
+import { COLORS } from "../../../constants";
 import { AntDesign } from "@expo/vector-icons";
 
-import {nutritionLogo} from "../../../../constants"
+import Additive from "../svg/Additive";
+import Preservative from "../svg/Preservative";
+import Chemical from "../svg/Chemical"
+import Nutrient from "../svg/Nutrient"
 
-const FoodModal = ({ ingredient, onPress, thumbnail }) => {
+const IngredientModal = ({ ingredient, onPress, thumbnail }) => {
+
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View
@@ -41,13 +45,8 @@ const FoodModal = ({ ingredient, onPress, thumbnail }) => {
           }}
         >
           <View>
-            <Image
-              source={thumbnail}
-              resizeMode="contain"
-              style={{
-                width: 100,
-                height: 100,
-              }}
+            <Chemical 
+              size={100}
             />
           </View>
           <Text style={{ color: COLORS.primary, fontSize: 25 }}>{ingredient.name}</Text>
@@ -67,4 +66,4 @@ const checkImageURL = (url) => {
   return url && url.startsWith("http");
 };
 
-export default FoodModal;
+export default IngredientModal;

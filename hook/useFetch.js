@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const useFetch = (endpoint, query) => {
+const useFetch = (endpoint, body, method) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const options = {
-    method: "GET",
+    method: method,
     url: `https://5fkjvn2s62.execute-api.us-east-2.amazonaws.com/default${endpoint}`,
-    params: { ...query },
+    params: { ...body },
   };
 
   const fetchData = async () => {

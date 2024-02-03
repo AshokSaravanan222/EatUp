@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons"; // Import the Ionicons from @expo/vector-icons
-import { COLORS, SHADOWS, SIZES } from "../../../../constants"
+import { COLORS, SHADOWS, SIZES } from "../../constants"
 import { useRouter } from "expo-router";
 
 const CameraButton = () => {

@@ -3,9 +3,9 @@ import { useRouter } from "expo-router";
 import { View, Text, TouchableOpacity, ActivityIndicator, FlatList } from "react-native";
 import { useState } from "react";
 
-import styles from "../foodlist/foodlist.style";
-import { COLORS, SIZES } from "../../../constants";
-import FoodItem from "../fooditem/FoodItem";
+import styles from "./date.style";
+import { COLORS, SIZES } from "../../constants";
+import MealCard from "../mealCard/MealCard"
 
 const Date = ({ date, data}) => {
 
@@ -18,11 +18,11 @@ const Date = ({ date, data}) => {
         <FlatList
           data={data}
           renderItem={({ item }) => (
-            <FoodItem
-              food={item}
+            <MealCard 
+              meal={item}
             />
           )}
-          keyExtractor={(food) => food.id}
+          keyExtractor={(meal) => meal.food}
           contentContainerStyle={{ columnGap: SIZES.medium }}
           vertical
         />

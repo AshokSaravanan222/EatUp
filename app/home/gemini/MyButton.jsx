@@ -12,6 +12,7 @@ const MyButton = ({ onPress, title }) => (
       backgroundColor: COLORS.tertiary, // Set your desired color
       padding: 10,
       borderRadius: 5,
+      width: 300
     },
     text: {
       color: 'white',
