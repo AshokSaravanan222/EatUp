@@ -3,12 +3,12 @@ import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Constants from 'expo-constants';
 import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
-import Button from '../../../components/camera/CameraButton';
+import { CameraScreenButton } from '../../../components';
 import {useRouter} from 'expo-router'
 import { COLORS } from '../../../constants';
 
 export default function CameraScreen() {
-    const router = useRouter();
+  const router = useRouter();
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -67,7 +67,14 @@ export default function CameraScreen() {
               paddingHorizontal: 30,
             }}
           >
-            <Button
+            <CameraScreenButton
+              title=""
+              icon="home"
+              onPress={() => {
+                router.push("home");
+              }}
+            />
+            <CameraScreenButton
               title=""
               icon="retweet"
               onPress={() => {
@@ -76,7 +83,7 @@ export default function CameraScreen() {
                 );
               }}
             />
-            <Button
+            <CameraScreenButton
               onPress={() =>
                 setFlash(
                   flash === Camera.Constants.FlashMode.off
@@ -102,15 +109,15 @@ export default function CameraScreen() {
               paddingHorizontal: 50,
             }}
           >
-            <Button
+            <CameraScreenButton
               title="Re-take"
               onPress={() => setImage(null)}
               icon="retweet"
             />
-            <Button title="Save" onPress={savePicture} icon="check" />
+            <CameraScreenButton title="Looks Good" onPress={savePicture} icon="thumbs-up" />
           </View>
         ) : (
-          <Button title="Take a picture" onPress={takePicture} icon="camera" />
+          <CameraScreenButton title="Take a picture" onPress={takePicture} icon="camera" />
         )}
       </View>
     </View>
