@@ -88,7 +88,7 @@ const Gemini = () => {
           console.log(response.data); // Handle the response as needed
           // router.push({ pathname: '/home/ingredients', params: { name: data[0], data: data.slice(1)}});
         } catch (error) {
-          console.error('Error posting data:', error);
+          console.error('Error posting data:', error.response.data);
         }
       };
 

@@ -1,9 +1,11 @@
 import React from 'react'
 import { Text } from 'react-native'
 
+import styles from './ingredientDisplay.style'
+
 const IngredientDisplay = ({ingredient}) => {
   return (
-    <Text>{ingredient}</Text>
+    <Text style={styles.itemText}>{ingredient}</Text>
   )
 }
 

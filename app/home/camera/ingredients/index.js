@@ -1,26 +1,60 @@
-import React, { useState} from 'react'
+import React, { useState, useEffect} from 'react'
 import { Text, View, SafeAreaView, StyleSheet, ActivityIndicator, FlatList} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { useLocalSearchParams } from 'expo-router';
-import {IngredientDisplay, PostIngredientsButton} from "../../../../components"
-import {COLORS, SIZES, FONT} from ".././../../../constants"
+import {IngredientDisplay, PostIngredientsButton} from "../../../../components";
+import {COLORS, SIZES, FONT} from ".././../../../constants";
+
+import * as FileSystem from 'expo-file-system';
+import axios from 'axios';
 
 const Ingredients = () => {
 
   const [displayText, setDisplayText] = useState("We are processing your ingredients...");
 
-  const [data, setData] = useState(["Enriched Flour Bleached", "Monoglycerides", "Soybean Oil", "Corn Syrup", "Salt", "Corn Starch", "Yeast", "Sugar", "Leavening", "Citric Acid", "Soy Lecithin", "Natural Flavor"]);
+  const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   const params = useLocalSearchParams();
   const { imageUri } = params;
 
-  console.log(imageUri)
+  async function callGeminiAPI() {
+    try {
+      setLoading(true);
+      setDisplayText("Calling Gemini API.");
+      // Check if the imageUri is available
+      if (!imageUri) {
+        console.error("No image URI available");
+        setError(true);
+        setLoading(false);
+        return;
+      }
 
-  // convert imgPath into b64
-  const image = null;
+      // convert imgPath into base64
+      const base64 = await FileSystem.readAsStringAsync(imageUri, { encoding: 'base64' });
+      
+      try {
+        console.log(data);
+      const response = await axios.post('https://xs1grhmjqd.execute-api.us-east-2.amazonaws.com/default/ingredients', {
+        image: base64
+      });
+      console.log(response.data); // Handle the response as needed
+      setData(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error posting data:', error.response.data);
+    }
+
+      // const items = null;
+      // setData(items);
+      // console.log(items);
+    } catch (error) {
+      setLoading(false);
+      console.error("Calling Gemini API Error: ", error);
+    }
+}
 
   // call gemini api (display for user)
 
@@ -34,22 +68,11 @@ const Ingredients = () => {
 
   // on receving the final response, push to Meal screen with ingridient
 
-  // const postIngredients = async () => {
-  //   try {
-  //       console.log(data);
-  //     const response = await axios.post('https://xs1grhmjqd.execute-api.us-east-2.amazonaws.com/default/eatup', {
-  //       uuid: uuid,
-  //       ingredients: data, // CHANGE AFTER YOU TEST
-  //       // Add other necessary data or headers as required by your API
-  //     });
-  //     console.log(response.data); // Handle the response as needed
-  //     // router.push({ pathname: '/home/ingredients', params: { name: data[0], data: data.slice(1)}});
-  //   } catch (error) {
-  //     console.error('Error posting data:', error);
-  //   }
-  // };
-
-  // const { data, isLoading, error } = useFetch("/ingredients", {"image" : imgPath}, "POST"); // make just return body
+  useEffect(() => {
+    if (imageUri) {
+      callGeminiAPI();
+    }
+  }, [imageUri]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -78,7 +101,7 @@ const Ingredients = () => {
       </View>
       <View style={styles.centeredView}>
       {
-        data.length > 0 && (
+        data.ingredients?.length > 0 && (
           <PostIngredientsButton title="Post Ingredients"/>
         )
       }
