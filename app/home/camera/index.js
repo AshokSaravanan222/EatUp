@@ -40,7 +40,8 @@ export default function CameraScreen() {
       try {
         // alert('Food Tracked! 🍏');
         console.log('saved successfully');
-        router.push({ pathname: 'home/gemini', params: { imageUri: image } });
+        // router.push({ pathname: 'home/gemini', params: { imageUri: image } });
+        router.push({ pathname: 'home/camera/ingredients', params: { imageUri: image } });
       } catch (error) {
         console.log(error);
       }

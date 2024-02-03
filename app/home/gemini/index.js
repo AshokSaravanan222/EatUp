@@ -3,7 +3,7 @@ import { Text, View, SafeAreaView, StyleSheet, ActivityIndicator, FlatList} from
 import * as ImagePicker from 'expo-image-picker';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { useLocalSearchParams } from 'expo-router';
-import MyButton from './MyButton';
+import { PostIngredientsButton } from '../../../components';
 
 import { useState, useEffect } from 'react';
 
@@ -117,7 +117,7 @@ return (
       <View style={styles.centeredView}>
       {
         data.length > 0 && (
-          <MyButton title="Post Ingredients" onPress={postIngredients} />
+          <PostIngredientsButton title="Post Ingredients" onPress={postIngredients} />
         )
       }
     </View>
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     centeredView: {
       justifyContent: 'center', // Centers content vertically in the container
       alignItems: 'center', // Centers content horizontally in the container
-    },
+    }
   });
   
 

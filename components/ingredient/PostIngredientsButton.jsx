@@ -1,7 +1,7 @@
-import { COLORS } from "../../../constants";
+import { COLORS } from "../../constants"
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-const MyButton = ({ onPress, title }) => (
+const PostIngredientsButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.button}>
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
@@ -20,4 +20,4 @@ const MyButton = ({ onPress, title }) => (
     },
   });
   
-  export default MyButton;
+  export default PostIngredientsButton;
