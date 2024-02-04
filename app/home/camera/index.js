@@ -6,6 +6,7 @@ import * as MediaLibrary from 'expo-media-library';
 import { CameraScreenButton } from '../../../components';
 import {useRouter} from 'expo-router'
 import { COLORS } from '../../../constants';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CameraScreen() {
   const router = useRouter();

@@ -274,7 +274,6 @@ const History = () => {
   const error = false;
   // const { data, isLoading, error } = useFetch("/user", {"uuid" : "adfadfafa"}, "GET");
 
-
 useEffect(() => {
   // Simulate a typing animation by updating the title character by character
   const targetTitle = "EatUp";

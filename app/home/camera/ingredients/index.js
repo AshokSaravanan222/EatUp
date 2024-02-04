@@ -2,64 +2,107 @@ import React, { useState, useEffect} from 'react'
 import { Text, View, SafeAreaView, StyleSheet, ActivityIndicator, FlatList} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import {IngredientDisplay, PostIngredientsButton} from "../../../../components";
 import {COLORS, SIZES, FONT} from ".././../../../constants";
+import Constants from 'expo-constants';
 
 import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
 
 const Ingredients = () => {
 
-  const [displayText, setDisplayText] = useState("We are processing your ingredients...");
+  const [displayText, setDisplayText] = useState("");
 
-  const [data, setData] = useState([]);
+  const [meal, setMeal] = useState("")
+  const [ingredients, setIngredients] = useState([]);
+  const [summaries, setSummaries] = useState([])
+
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   const params = useLocalSearchParams();
   const { imageUri } = params;
 
-  async function callGeminiAPI() {
+  async function callGemini() {
+    setLoading(true);
+    setDisplayText("Calling Gemini API.");
+  
+    // Check if the imageUri is available
+    if (!imageUri) {
+      console.error("No image URI available");
+      setError(true);
+      setDisplayText("No image URI available."); // Update display text to show error message
+      setLoading(false);
+      return;
+    }
+  
     try {
-      setLoading(true);
-      setDisplayText("Calling Gemini API.");
-      // Check if the imageUri is available
-      if (!imageUri) {
-        console.error("No image URI available");
-        setError(true);
-        setLoading(false);
-        return;
-      }
-
-      // convert imgPath into base64
+      // Convert imageUri into base64
       const base64 = await FileSystem.readAsStringAsync(imageUri, { encoding: 'base64' });
       
-      try {
-        console.log(data);
+      // Make the API call
       const response = await axios.post('https://xs1grhmjqd.execute-api.us-east-2.amazonaws.com/default/ingredients', {
         image: base64
       });
-      console.log(response.data); // Handle the response as needed
-      setData(response.data);
-      setLoading(false);
+  
+      // Log and handle the response as needed
+      console.log(response.data); 
+      setMeal(response.data.meal)
+      setDisplayText(response.data.meal);
+      setIngredients(response.data.ingredients);
     } catch (error) {
-      console.error('Error posting data:', error.response.data);
+      // Log the error and extract the specific message if available
+      console.error('Error posting data:', error.response ? error.response.data : error);
+      setError(true); // Set error state
+      setDisplayText("Error posting data: " + (error.response ? JSON.stringify(error.response.data) : "An unknown error occurred"));
+    } finally {
+      setLoading(false); // Ensure loading is false after operation completes or fails
+      
     }
+  }
+  
 
-      // const items = null;
-      // setData(items);
-      // console.log(items);
-    } catch (error) {
+  async function callOpenAI() {
+    setLoading(true);
+    setDisplayText("Calling OpenAI API.");
+  
+    // Check if the imageUri is available
+    if (!ingredients) {
+      console.error("No ingredients available");
+      setError(true);
+      setDisplayText("No ingredients available."); // Update display text to show error message
       setLoading(false);
-      console.error("Calling Gemini API Error: ", error);
+      return;
     }
-}
+  
+    try {
+      // Make the API call
+      const response = await axios.post('https://xs1grhmjqd.execute-api.us-east-2.amazonaws.com/default/summary', {
+        meal: meal,
+        ingredients: ingredients
+      });
 
-  // call gemini api (display for user)
+      // Log and handle the response as needed
+      console.log(response.data);
+      setSummaries(response.data.summaries);
+    } catch (error) {
+      // Log the error and extract the specific message if available
+      console.error('Error posting data:', error.response ? error.response.data : error);
+      setError(true); // Set error state
+      setDisplayText("Error posting data: " + (error.response ? JSON.stringify(error.response.data) : "An unknown error occurred"));
+    } finally {
+      setDisplayText("Got info from OpenAI");
+      setLoading(false); // Ensure loading is false after operation completes or fails
 
-  // if back button presed, route back
-  // if forward button pressed proceed
+    }
+  }
+
+  const handleIngredients = () => {
+    callOpenAI();
+  }
+
+  
 
   // call score endpoint (display for user -- just say getting scores)
   // then call summary endpoint (display for user -- just say getting descriptions)
@@ -69,9 +112,12 @@ const Ingredients = () => {
   // on receving the final response, push to Meal screen with ingridient
 
   useEffect(() => {
+    setDisplayText("We are processing your ingredients...");
+    // call gemini api (display for user)
     if (imageUri) {
-      callGeminiAPI();
+      callGemini();
     }
+
   }, [imageUri]);
 
   return (
@@ -87,7 +133,7 @@ const Ingredients = () => {
       ) : (
         <View>
         <FlatList
-          data={data.ingredients}
+          data={ingredients}
           renderItem={({ item }) => (
             <IngredientDisplay 
             ingredient={item}
@@ -101,8 +147,21 @@ const Ingredients = () => {
       </View>
       <View style={styles.centeredView}>
       {
-        data.ingredients?.length > 0 && (
-          <PostIngredientsButton title="Post Ingredients"/>
+        ingredients.length > 0 && (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingHorizontal: 50,
+            }}
+          >
+          <View style={{ marginRight: 10 }}>
+            <PostIngredientsButton title="Go Back" onPress={() => router.push("home/camera")}/>
+          </View>
+          <View style={{ marginLeft: 10 }}>
+            <PostIngredientsButton title="Next" onPress={handleIngredients}/>
+          </View>
+          </View>
         )
       }
     </View>

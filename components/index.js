@@ -4,7 +4,7 @@ import History from "./history/History";
 
 import CameraScreenButton from "./camera/CameraScreenButton";
 import IngredientDisplay from "./ingredient/IngredientDisplay";
-import PostIngredientsButton from "./ingredient/PostIngredientsButton";
+import PostIngredientsButton from "./ingredient/IngredientsButton";
 
 import Ingredient from "./ingredient/Ingredient"
 

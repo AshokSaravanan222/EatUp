@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, TouchableOpacity} from 'react-native'
 
 import styles from './ingredientDisplay.style'
 
@@ -9,4 +9,4 @@ const IngredientDisplay = ({ingredient}) => {
   )
 }
 
-export default IngredientDisplay
+export default IngredientDisplay;

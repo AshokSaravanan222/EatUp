@@ -1,7 +1,7 @@
 import { COLORS } from "../../constants"
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-const PostIngredientsButton = ({ onPress, title }) => (
+const IngredientsButton = ({ title, onPress}) => (
     <TouchableOpacity onPress={onPress} style={styles.button}>
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
@@ -12,7 +12,7 @@ const PostIngredientsButton = ({ onPress, title }) => (
       backgroundColor: COLORS.tertiary, // Set your desired color
       padding: 10,
       borderRadius: 5,
-      width: 300
+      width: 150
     },
     text: {
       color: 'white',
@@ -20,4 +20,4 @@ const PostIngredientsButton = ({ onPress, title }) => (
     },
   });
   
-  export default PostIngredientsButton;
+  export default IngredientsButton;

@@ -21,6 +21,6 @@ export default function Layout() {
       }
 
     return (
-    <Slot></Slot>
+      <Slot></Slot>
     );
 }

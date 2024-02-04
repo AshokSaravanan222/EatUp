@@ -1,5 +1,5 @@
-import { Slot } from 'expo-router';
+import { Slot, Stack } from 'expo-router';
 
 export default function HomeLayout() {
-  return <Slot />;
+  return <Slot></Slot>
 }
