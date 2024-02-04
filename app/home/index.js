@@ -7,9 +7,10 @@ import {Ionicons } from '@expo/vector-icons';
 const Page = () => {
 
   const router = useRouter();
+  const uuid = "af7c1fe6-d669-414e-b066-e9733f0de7a8";
 
   const onCameraBtnPress = () => {
-    router.push("home/camera");
+    router.push({ pathname: 'home/camera', params: { uuid: uuid } });
   }
 
   return (

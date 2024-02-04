@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { CameraScreenButton } from '../../../components';
-import {useRouter} from 'expo-router'
+import {useRouter, useLocalSearchParams} from 'expo-router'
 import { COLORS } from '../../../constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -15,6 +15,9 @@ export default function CameraScreen() {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const cameraRef = useRef(null);
+
+  const params = useLocalSearchParams();
+  const { uuid } = params;
 
 
   useEffect(() => {
@@ -42,7 +45,7 @@ export default function CameraScreen() {
         // alert('Food Tracked! 🍏');
         console.log('saved successfully');
         // router.push({ pathname: 'home/gemini', params: { imageUri: image } });
-        router.push({ pathname: 'home/camera/ingredients', params: { imageUri: image } });
+        router.push({ pathname: 'home/camera/ingredients', params: { uuid: uuid, imageUri: image } });
       } catch (error) {
         console.log(error);
       }

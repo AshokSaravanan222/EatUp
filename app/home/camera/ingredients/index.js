@@ -16,17 +16,18 @@ const Ingredients = () => {
 
   const [meal, setMeal] = useState("")
   const [ingredients, setIngredients] = useState([]);
-  const [summaries, setSummaries] = useState([])
+  const [ingredientTypes, setIngredientTypes] = useState([]);
 
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   const params = useLocalSearchParams();
-  const { imageUri } = params;
+  const { uuid, imageUri } = params;
 
-  async function callGemini() {
+  async function fetchIngredients() {
+    // GEMINI API
     setLoading(true);
-    setDisplayText("Calling Gemini API.");
+    setDisplayText("Finding ingredients.");
   
     // Check if the imageUri is available
     if (!imageUri) {
@@ -51,6 +52,7 @@ const Ingredients = () => {
       setMeal(response.data.meal)
       setDisplayText(response.data.meal);
       setIngredients(response.data.ingredients);
+      setIngredientTypes(response.data.types);
     } catch (error) {
       // Log the error and extract the specific message if available
       console.error('Error posting data:', error.response ? error.response.data : error);
@@ -63,59 +65,93 @@ const Ingredients = () => {
   }
   
 
-  async function callOpenAI() {
-    setLoading(true);
-    setDisplayText("Calling OpenAI API.");
-  
-    // Check if the imageUri is available
-    if (!ingredients) {
+  async function fetchSummaries() {
+    if (ingredients.length === 0) {
       console.error("No ingredients available");
-      setError(true);
-      setDisplayText("No ingredients available."); // Update display text to show error message
-      setLoading(false);
-      return;
+      return [];
     }
-  
+    
     try {
-      // Make the API call
       const response = await axios.post('https://xs1grhmjqd.execute-api.us-east-2.amazonaws.com/default/summary', {
         meal: meal,
         ingredients: ingredients
       });
-
-      // Log and handle the response as needed
       console.log(response.data);
-      setSummaries(response.data.summaries);
+      return response.data.summaries;
     } catch (error) {
-      // Log the error and extract the specific message if available
-      console.error('Error posting data:', error.response ? error.response.data : error);
-      setError(true); // Set error state
-      setDisplayText("Error posting data: " + (error.response ? JSON.stringify(error.response.data) : "An unknown error occurred"));
-    } finally {
-      setDisplayText("Got info from OpenAI");
-      setLoading(false); // Ensure loading is false after operation completes or fails
-
+      console.error('Error fetching summaries:', error);
+      return [];
     }
   }
-
-  const handleIngredients = () => {
-    callOpenAI();
+  
+  async function fetchScores() {
+    if (ingredients.length === 0) {
+      console.error("No ingredients available");
+      return [];
+    }
+    
+    try {
+      const response = await axios.post('https://xs1grhmjqd.execute-api.us-east-2.amazonaws.com/default/score', {
+        meal: meal,
+        ingredients: ingredients
+      });
+      console.log(response.data);
+      return response.data.scores;
+    } catch (error) {
+      console.error('Error fetching scores:', error);
+      return [];
+    }
   }
-
   
 
-  // call score endpoint (display for user -- just say getting scores)
-  // then call summary endpoint (display for user -- just say getting descriptions)
+  async function postData(summaries, scores) {
+    try {
+      const response = await axios.post('https://xs1grhmjqd.execute-api.us-east-2.amazonaws.com/default/user', {
+        uuid: uuid,
+        meal: meal,
+        ingredients: ingredients,
+        types: ingredientTypes,
+        summaries: summaries,
+        scores: scores
+      });
+      console.log(response.data);
+      const mealString = JSON.stringify(response.data);
+      router.push({ pathname: 'home/meal', params: { meal: mealString }});
+    } catch (error) {
+      console.error('Error posting data:', error.response.data);
+    }
+  }
+  
 
-  // once all have been called and data is received, call storing endpoint --> return back formatted list (display to user --> say that we are adding an entry)
-
-  // on receving the final response, push to Meal screen with ingridient
+  const postIngredients = async () => {
+    setLoading(true);
+    setError(false);
+    setDisplayText("Processing...");
+  
+    try {
+      const [summariesData, scoresData] = await Promise.all([fetchSummaries(), fetchScores()]);
+      
+      if (summariesData.length === 0 || scoresData.length === 0) {
+        throw new Error("Failed to fetch summaries or scores");
+      }
+  
+      await postData(summariesData, scoresData);
+      setDisplayText("Data posted successfully.");
+    } catch (error) {
+      console.error("Error during postIngredients:", error);
+      setError(true);
+      setDisplayText("An error occurred during processing.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
   useEffect(() => {
     setDisplayText("We are processing your ingredients...");
     // call gemini api (display for user)
     if (imageUri) {
-      callGemini();
+      fetchIngredients();
     }
 
   }, [imageUri]);
@@ -159,7 +195,7 @@ const Ingredients = () => {
             <PostIngredientsButton title="Go Back" onPress={() => router.push("home/camera")}/>
           </View>
           <View style={{ marginLeft: 10 }}>
-            <PostIngredientsButton title="Next" onPress={handleIngredients}/>
+            <PostIngredientsButton title="Next" onPress={postIngredients}/>
           </View>
           </View>
         )
