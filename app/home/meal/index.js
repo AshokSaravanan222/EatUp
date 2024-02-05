@@ -1,16 +1,34 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet, SafeAreaView} from "react-native";
-import { useLocalSearchParams} from "expo-router";
+import { View, Text, FlatList, StyleSheet, SafeAreaView, TouchableOpacity} from "react-native";
+import { useLocalSearchParams, Stack, useRouter} from "expo-router";
 import { COLORS, SIZES, FONT} from "../../../constants";
 import { Ingredient } from "../../../components";
+import {Ionicons} from '@expo/vector-icons';
 
 const Meal = () => {
   const params = useLocalSearchParams();
   const mealString = params.meal // Assuming `useLocalSearchParams` gives you a method `.get()` to retrieve query parameters
   const meal = JSON.parse(mealString || '{}'); // Parse the string back into an object
 
+  const router = useRouter();
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.secondary }}>
+      <Stack.Screen
+        options={{
+          headerStyle: { backgroundColor: COLORS.lightWhite },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                router.back();
+              }}
+            ><Ionicons name="arrow-back" size={24} color={COLORS.primary} style={{padding: 10}} /></TouchableOpacity>
+          ),
+          headerTitle: "",
+        }}
+      />
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>{meal.food}</Text>
@@ -48,7 +66,7 @@ const styles = StyleSheet.create({
     marginTop: SIZES.small,
   },
   headerTitle: {
-    fontSize: SIZES.large,
+    fontSize: SIZES.xxLarge,
     fontFamily: FONT.bold,
     color: COLORS.primary,
     marginTop: SIZES.small,
