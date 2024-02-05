@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       padding: SIZES.medium,
       borderRadius: SIZES.medium,
-      backgroundColor: COLORS.blue,
+      backgroundColor: COLORS.secondary,
       ...SHADOWS.medium,
       shadowColor: COLORS.white,
       marginBottom: SIZES.small,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     calorieName: {
       fontSize: SIZES.medium,
       fontFamily: "DMBold",
-      color: "green",
+      color: COLORS.green,
     },
     jobType: {
       fontSize: SIZES.small + 2,
@@ -58,6 +58,10 @@ const styles = StyleSheet.create({
       marginTop: 3,
       textTransform: "capitalize",
     },
+    calorieContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+    }
   });
 
   export default styles;

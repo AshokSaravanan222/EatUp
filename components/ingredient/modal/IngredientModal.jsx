@@ -1,14 +1,11 @@
 import React from "react";
 import { View, TouchableOpacity, Text, Linking, Image, InteractionManager } from "react-native";
-import { COLORS } from "../../../constants";
+import { COLORS, SIZES, FONT} from "../../../constants";
 import { AntDesign } from "@expo/vector-icons";
 
-import Additive from "../svg/Additive";
-import Preservative from "../svg/Preservative";
-import Chemical from "../svg/Chemical"
-import Nutrient from "../svg/Nutrient"
+import IngredientLogo from "../IngredientLogo";
 
-const IngredientModal = ({ ingredient, onPress, thumbnail }) => {
+const IngredientModal = ({ ingredient, onPress }) => {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -45,16 +42,14 @@ const IngredientModal = ({ ingredient, onPress, thumbnail }) => {
           }}
         >
           <View>
-            <Chemical 
+            <IngredientLogo 
+              type={ingredient.type}
               size={100}
             />
           </View>
-          <Text style={{ color: COLORS.primary, fontSize: 25 }}>{ingredient.name}</Text>
-          <Text style={{ color: COLORS.primary, fontSize: 20, marginTop: 10 }}>
-            Score: {ingredient.score}
-          </Text>
+          <Text style={{ color: COLORS.primary, fontSize: SIZES.xxLarge, fontFamily: FONT.bold, marginTop: 10}}>{ingredient.name}</Text>
         </View>
-        <Text style={{ color: COLORS.primary, marginTop: 10 }}>
+        <Text style={{ color: COLORS.secondary,  fontSize: SIZES.medium, fontFamily: FONT.regular, marginTop: 10 }}>
           {ingredient.summary}
         </Text>
       </View>

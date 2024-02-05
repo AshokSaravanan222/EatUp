@@ -13,7 +13,7 @@ const Meal = () => {
   const router = useRouter();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.secondary }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <Stack.Screen
         options={{
           headerStyle: { backgroundColor: COLORS.lightWhite },
@@ -32,6 +32,10 @@ const Meal = () => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>{meal.food}</Text>
+          <View style={styles.calorieContainer}>
+          <Text style={styles.jobName} numberOfLines={1}>Average</Text>
+            <Text style={styles.calorieName}>{meal.avgScore}</Text>
+          </View>
         </View>
         <View style={styles.cardsContainer}>
           <FlatList
@@ -91,4 +95,18 @@ const styles = StyleSheet.create({
     fontFamily: FONT.medium,
     color: COLORS.gray,
   },
+  jobName: {
+    fontSize: SIZES.large,
+    fontFamily: "DMBold",
+    color: COLORS.primary,
+  },
+  calorieName: {
+    fontSize: SIZES.xxLarge,
+    fontFamily: "DMBold",
+    color: COLORS.green,
+  },
+  calorieContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  }
 });

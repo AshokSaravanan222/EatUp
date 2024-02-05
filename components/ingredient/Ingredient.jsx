@@ -6,17 +6,7 @@ import styles from "./ingredient.style";
 import { images } from "../../constants";
 import IngredientModal from "../ingredient/modal/IngredientModal";
 
-import Additive from "./svg/Additive";
-import Preservative from "./svg/Preservative";
-import Chemical from "./svg/Chemical"
-import Nutrient from "./svg/Nutrient"
-
-const mapping = {
-    "preservative" : images.preservative,
-    "additive" : images.additive,
-    "nutrient" : images.nutrient,
-    "chemical" : images.chemical,
-}
+import IngredientLogo from "./IngredientLogo";
 
 const Ingredient = ( {ingredient} ) => {
 
@@ -41,11 +31,12 @@ const Ingredient = ( {ingredient} ) => {
           setModalVisible(!modalVisible);
         }}
       >
-        <IngredientModal ingredient={ingredient} onPress={onPress} thumbnail={mapping[ingredient.type]} />
+        <IngredientModal ingredient={ingredient} onPress={onPress} />
       </Modal>
       <TouchableOpacity style={styles.logoContainer}>
-        <Additive 
-          size={40}
+        <IngredientLogo 
+          type={ingredient.type}
+          size={30}
         />
       </TouchableOpacity>
 

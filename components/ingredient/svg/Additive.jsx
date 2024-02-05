@@ -5,7 +5,7 @@ import { COLORS } from "../../../constants"
 function SvgComponent(props) {
   return (
     <Svg
-      fill={COLORS.tertiary}
+      fill={COLORS.primary}
       width={props.size}
       height={props.size}
       xmlns="http://www.w3.org/2000/svg"
