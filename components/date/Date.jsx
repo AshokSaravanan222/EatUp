@@ -22,7 +22,6 @@ const Date = ({ date, data}) => {
               meal={item}
             />
           )}
-          keyExtractor={(meal) => meal.food}
           contentContainerStyle={{ columnGap: SIZES.medium }}
           vertical
         />

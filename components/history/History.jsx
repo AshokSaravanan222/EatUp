@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, ActivityIndicator, FlatList, Image } from "react-native";
 import { useState, useRef, useEffect } from "react";
 import TextTicker from "react-native-text-ticker";
-import Slide from "../animation/Slide";
 
 import styles from "./history.style";
 import { COLORS, SIZES, FONT } from "../../constants";
