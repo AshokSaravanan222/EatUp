@@ -10,18 +10,23 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#232323"
+      "backgroundColor": "#212121"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.asaravan.eatup"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-      }
+        "foregroundImage": "./assets/adaptive-icon.png"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -29,10 +34,19 @@
     "plugins": [
       "expo-router",
       [
-        "expo-camera", {
-          "cameraPermission": "EatUp requires camera access to identify and measure food portions, aiding in nutritional tracking. Results are displayed on the homescreen."
+        "expo-camera",
+        {
+          "cameraPermission": "EatUp requires camera access to identify ingredients on labels, aiding in nutritional tracking. Results are displayed on the homescreen."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "740cfe11-47ae-4da3-be55-aaa2b5481468"
+      }
+    }
   }
 }

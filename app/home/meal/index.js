@@ -22,7 +22,7 @@ const Meal = () => {
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => {
-                router.back();
+                router.push('home');
               }}
             ><Ionicons name="arrow-back" size={24} color={COLORS.primary} style={{padding: 10}} /></TouchableOpacity>
           ),
