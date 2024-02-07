@@ -77,6 +77,7 @@ const Ingredients = () => {
         ingredients: ingredients
       });
       console.log(response.data);
+      setDisplayText("Got ingredient summaries.");
       return response.data.summaries;
     } catch (error) {
       console.error('Error fetching summaries:', error);
@@ -84,23 +85,41 @@ const Ingredients = () => {
     }
   }
   
-  async function fetchScores() {
+  async function fetchScoresBatched() {
     if (ingredients.length === 0) {
       console.error("No ingredients available");
       return [];
     }
-    
-    try {
-      const response = await axios.post('https://xs1grhmjqd.execute-api.us-east-2.amazonaws.com/default/score', {
-        meal: meal,
-        ingredients: ingredients
-      });
-      console.log(response.data);
-      return response.data.scores;
-    } catch (error) {
-      console.error('Error fetching scores:', error);
-      return [];
+  
+    // Determine batch size
+    const batchSize = 3;
+    let batchedScores = [];
+  
+    // Create batches of ingredients
+    for (let i = 0; i < ingredients.length; i += batchSize) {
+      const batchIngredients = ingredients.slice(i, i + batchSize);
+  
+      try {
+        const response = await axios.post('https://xs1grhmjqd.execute-api.us-east-2.amazonaws.com/default/score', {
+          meal: meal,
+          ingredients: batchIngredients,
+        });
+  
+        console.log(response.data);
+        setDisplayText(`Got scores for ${i + batchSize}/${ingredients.length} ingredients.`);
+        batchedScores = batchedScores.concat(response.data.scores);
+      } catch (error) {
+
+        const errorScores = new Array(batchIngredients.length).fill(0);
+        batchedScores = batchedScores.concat(errorScores);
+        setDisplayText(`Error getting scores for ${i + batchSize}/${ingredients.length} ingredients.`);
+
+        console.error('Error fetching scores for batch:', error);
+        // Optionally, handle partial failures/continue with next batch
+      }
     }
+  
+    return batchedScores;
   }
   
 
@@ -129,7 +148,7 @@ const Ingredients = () => {
     setDisplayText("Processing...");
   
     try {
-      const [summariesData, scoresData] = await Promise.all([fetchSummaries(), fetchScores()]);
+      const [summariesData, scoresData] = await Promise.all([fetchSummaries(), fetchScoresBatched()]);
       
       if (summariesData.length === 0 || scoresData.length === 0) {
         throw new Error("Failed to fetch summaries or scores");

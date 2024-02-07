@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "eatup",
+    "name": "EatUp",
     "slug": "eatup",
     "version": "1.0.0",
     "scheme": "acme",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon2.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
